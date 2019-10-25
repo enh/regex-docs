@@ -1,6 +1,23 @@
 # Regular Expression Syntax Quick Reference
 
-Java supports a subset of Perl 5 regular expression syntax. An important gotcha is that Java has no regular expression literals, and uses plain old string literals instead. This means that you need an extra level of escaping. For example, the regular expression `\s+` has to be represented as the string `"\\s+"`.
+## POSIX Basic Regular Expressions (BREs)
+
+* Single literal character.
+* `\` escapes the following special character.
+* `.` matches any character (except NUL).
+* `*` matches.
+* `^` matches the beginning of the input.
+* `$` matches the end of the input.
+* `[]` TODO.
+* `\(`_expr_`\)` TODO.
+* `\{`_m_`\}`, `\{`_m_`,\}`, `\{`_m_`,`_n_`\}` TODO.
+* `\1`..`\9` TODO.
+
+See also [POSIX.1-2008](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html).
+
+## POSIX Extended Regular Expressions (EREs)
+
+See also [POSIX.1-2008](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html).
 
 ## Escape sequences
 
@@ -10,9 +27,9 @@ Java supports a subset of Perl 5 regular expression syntax. An important gotcha 
 | `\Q`                   | Quote all following metacharacters until `\E`.                            |
 | `\E`                   | Stop quoting metacharacters (started by `\Q`).                            |
 | `\\`                   | A literal backslash.                                                      |
-| `&#x005c;u`<i>hhhh</i> | The Unicode character U+hhhh (in hex).                                    |
-| `&#x005c;x`<i>hh</i>   | The Unicode character U+00hh (in hex).                                    |
-| `\c`<i>x</i>           | The ASCII control character ^x (so `\cH` would be ^H, U+0008).            |
+| `\u`_hhhh_             | The Unicode character U+hhhh (in hex).                                    |
+| `\x`_hh_               | The Unicode character U+00hh (in hex).                                    |
+| `\c`_x_                | The ASCII control character ^x (so `\cH` would be ^H, U+0008).            |
 | `\a`                   | The ASCII bell character (U+0007).     |
 | `\e`                   | The ASCII ESC character (U+001b).       |
 | `\f`                   | The ASCII form feed character (U+000c). |
@@ -42,8 +59,8 @@ Most of the time, the built-in character classes are more useful:
 | `\S` | Any non-whitespace character (see note below). |
 | `\w` | Any word character (see note below). |
 | `\W` | Any non-word character (see note below). |
-| `\p{`NAME`}` | Any character in the class with the given _NAME_. |
-| `\P{`NAME`}` | Any character _not_ in the named class. |
+| `\p{`_NAME_`}` | Any character in the class with the given _NAME_. |
+| `\P{`_NAME_`}` | Any character _not_ in the named class. |
 
 Note that these built-in classes don't just cover the traditional ASCII range. For example, `\w` is equivalent to the character class `[\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}]`.
 
@@ -60,38 +77,38 @@ There are also a variety of named classes:
 
 Quantifiers match some number of instances of the preceding regular expression.
 
-| Quantifier  | Meaning |
-| ----------- | --------------- |
-| `*`         | Zero or more. |
-| `?`         | Zero or one.  |
-| `+`         | One or more.  |
-| `{`n`}`     | Exactly _n_ repetitions.  |
-| `{`n`,}`    | At least _n_ repetitions. |
-| `{`n`,`m`}` | At least _n_ and not more than _m_. |
+| Quantifier      | Meaning |
+| --------------- | --------------- |
+| `*`             | Zero or more. |
+| `?`             | Zero or one.  |
+| `+`             | One or more.  |
+| `{`_n_`}`       | Exactly _n_ repetitions.  |
+| `{`_n_`,}`      | At least _n_ repetitions. |
+| `{`_n_`,`_m_`}` | At least _n_ and not more than _m_. |
 
 Quantifiers are "greedy" by default, meaning that they will match the longest possible input sequence. There are also non-greedy quantifiers that match the shortest possible input sequence.
 
 They're same as the greedy ones but with a trailing `?`:
 
-| Quantifier   | Meaning |
-| ------------ | --------------- |
-| `*?`         | Zero or more (non-greedy). |
-| `??`         | Zero or one (non-greedy).  |
-| `+?`         | One or more (non-greedy).  |
-| `{`n`}?`     | Exactly _n_ repetitions (non-greedy).  |
-| `{`n`,}?`    | At least _n_ repetitions (non-greedy). |
-| `{`n`,`m`}?` | At least _n_ and not more than _m_ (non-greedy). |
+| Quantifier       | Meaning |
+| ---------------- | --------------- |
+| `*?`             | Zero or more (non-greedy). |
+| `??`             | Zero or one (non-greedy).  |
+| `+?`             | One or more (non-greedy).  |
+| `{`_n_`}?`       | Exactly _n_ repetitions (non-greedy).  |
+| `{`_n_`,}?`      | At least _n_ repetitions (non-greedy). |
+| `{`_n_`,`_m_`}?` | At least _n_ and not more than _m_ (non-greedy). |
 
 Quantifiers allow backtracking by default. There are also possessive quantifiers to prevent backtracking. They're same as the greedy ones but with a trailing `+`:
 
-| Quantifier   | Meaning |
-| ------------ | --------------- |
-| `*+`         | Zero or more (possessive). |
-| `?+`         | Zero or one (possessive).  |
-| `++`         | One or more (possessive).  |
-| `{`n`}+`     | Exactly _n_ repetitions (possessive).  |
-| `{`n`,}+`    | At least _n_ repetitions (possessive). |
-| `{`n`,`m`}+` | At least _n_ and not more than _m_ (possessive). |
+| Quantifier       | Meaning |
+| ---------------- | --------------- |
+| `*+`             | Zero or more (possessive). |
+| `?+`             | Zero or one (possessive).  |
+| `++`             | One or more (possessive).  |
+| `{`_n_`}+`       | Exactly _n_ repetitions (possessive).  |
+| `{`_n_`,}+`      | At least _n_ repetitions (possessive). |
+| `{`_n_`,`_m_`}+` | At least _n_ and not more than _m_ (possessive). |
 
 ## Zero-width assertions
 
@@ -121,24 +138,24 @@ Look-around assertions assert that the subpattern does (positive) or doesn't (ne
 
 | Grouping     | Meaning |
 | ------------ | --------------- |
-| `(`e`)`      | A capturing group. |
-| `(?:`e`)`    | A non-capturing group. |
-| `(?>`e`)`    | An independent non-capturing group. (The first match of the subgroup is the only match tried.) |
-| `\`n         | The text already matched by capturing group _n_. |
+| `(`_e_`)`    | A capturing group. |
+| `(?:`_e_`)`  | A non-capturing group. |
+| `(?>`_e_`)`  | An independent non-capturing group. (The first match of the subgroup is the only match tried.) |
+| `\`_n_       | The text already matched by capturing group _n_. |
 
 ## Operators
 
 | Operator     | Meaning |
 | ------------ | --------------- |
 | ab           | Expression _a_ followed by expression _b_. |
-| a`|`b`       | Either expression _a_ or expression _b_. |
+| a|b          | Either expression _a_ or expression _b_. |
 
 ## Flags
 
-| Expression             | Meaning |
-| ---------------------- | --------------- |
-| `(?dimsux-dimsux:`e`)` | Evaluates the expression _e_ with the given flags enabled/disabled. |
-| `(?dimsux-dimsux)`     | Evaluates the rest of the pattern with the given flags enabled/disabled. |
+| Expression               | Meaning |
+| ------------------------ | --------------- |
+| `(?dimsux-dimsux:`_e_`)` | Evaluates the expression _e_ with the given flags enabled/disabled. |
+| `(?dimsux-dimsux)`       | Evaluates the rest of the pattern with the given flags enabled/disabled. |
 
 The flags are:
 
