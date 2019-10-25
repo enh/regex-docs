@@ -95,60 +95,60 @@ Quantifiers allow backtracking by default. There are also possessive quantifiers
 
 ## Zero-width assertions
 
-<table>
-  <tr> <td> ^ </td> <td>At beginning of line.</td> </tr>
-  <tr> <td> $ </td> <td>At end of line.</td> </tr>
-  <tr> <td> \A </td> <td>At beginning of input.</td> </tr>
-  <tr> <td> \b </td> <td>At word boundary.</td> </tr>
-  <tr> <td> \B </td> <td>At non-word boundary.</td> </tr>
-  <tr> <td> \G </td> <td>At end of previous match.</td> </tr>
-  <tr> <td> \z </td> <td>At end of input.</td> </tr>
-  <tr> <td> \Z </td> <td>At end of input, or before newline at end.</td> </tr>
-</table>
+| Assertion    | Meaning |
+| ------------ | --------------- |
+| `^`          | At beginning of line. |
+| `$`          | At end of line. |
+| `\A`         | At beginning of input. |
+| `\b`         | At word boundary. |
+| `\B`         | At non-word boundary. |
+| `\G`         | At end of previous match. |
+| `\z`         | At end of input. |
+| `\Z`         | At end of input, or before newline at end. |
 
 ## Look-around assertions
 
 Look-around assertions assert that the subpattern does (positive) or doesn't (negative) match after (look-ahead) or before (look-behind) the current position, without including the matched text in the containing match. The maximum length of possible matches for look-behind patterns must not be unbounded.
 
-<table>
-  <tr> <td> (?=<i>a</i>) </td> <td>Zero-width positive look-ahead.</td> </tr>
-  <tr> <td> (?!<i>a</i>) </td> <td>Zero-width negative look-ahead.</td> </tr>
-  <tr> <td> (?&lt;=<i>a</i>) </td> <td>Zero-width positive look-behind.</td> </tr>
-  <tr> <td> (?&lt;!<i>a</i>) </td> <td>Zero-width negative look-behind.</td> </tr>
-  </table>
+| Assertion    | Meaning |
+| ------------ | --------------- |
+| `(?=`e`)`    | Zero-width positive look-ahead. |
+| `(?!`e`)`    | Zero-width negative look-ahead. |
+| `(?<=`e`)`   | Zero-width positive look-behind. |
+| `(?<!`e`)`   | Zero-width negative look-behind. |
 
 ## Groups
 
-<table>
-  <tr> <td> (<i>a</i>) </td> <td>A capturing group.</td> </tr>
-  <tr> <td> (?:<i>a</i>) </td> <td>A non-capturing group.</td> </tr>
-  <tr> <td> (?&gt;<i>a</i>) </td> <td>An independent non-capturing group. (The first match of the subgroup is the only match tried.)</td> </tr>
-  <tr> <td> \<i>n</i> </td> <td>The text already matched by capturing group <i>n</i>.</td> </tr>
-  </table>
+| Grouping     | Meaning |
+| ------------ | --------------- |
+| `(`e`)`      | A capturing group. |
+| `(?:`e`)`    | A non-capturing group. |
+| `(?>`e`)`    | An independent non-capturing group. (The first match of the subgroup is the only match tried.) |
+| `\`n         | The text already matched by capturing group _n_. |
 
 ## Operators
 
-<table>
-  <tr> <td> <i>ab</i> </td> <td>Expression <i>a</i> followed by expression <i>b</i>.</td> </tr>
-  <tr> <td> <i>a</i>|<i>b</i> </td> <td>Either expression <i>a</i> or expression <i>b</i>.</td> </tr>
- </table>
+| Operator     | Meaning |
+| ------------ | --------------- |
+| ab           | Expression _a_ followed by expression _b_. |
+| a`|`b`       | Either expression _a_ or expression _b_. |
 
 ## Flags
 
-<table>
- <tr> <td> (?dimsux-dimsux:<i>a</i>) </td> <td>Evaluates the expression <i>a</i> with the given flags enabled/disabled.</td> </tr>
-  <tr> <td> (?dimsux-dimsux) </td> <td>Evaluates the rest of the pattern with the given flags enabled/disabled.</td> </tr>
-  </table>
+| Expression             | Meaning |
+| ---------------------- | --------------- |
+| `(?dimsux-dimsux:`e`)` | Evaluates the expression _e_ with the given flags enabled/disabled. |
+| `(?dimsux-dimsux)`     | Evaluates the rest of the pattern with the given flags enabled/disabled. |
 
 The flags are:
 
-<table>
-  <tr><td>`i`</td> <td>{@link #CASE_INSENSITIVE}</td> <td>case insensitive matching</td></tr>
-  <tr><td>`d`</td> <td>{@link #UNIX_LINES}</td>       <td>only accept {@code '\n'} as a line terminator</td></tr>
-  <tr><td>`m`</td> <td>{@link #MULTILINE}</td>        <td>allow {@code ^} and {@code $} to match beginning/end of any line</td></tr>
-  <tr><td>`s`</td> <td>{@link #DOTALL}</td>           <td>allow {@code .} to match {@code '\n'} ("s" for "single line")</td></tr>
-  <tr><td>`u`</td> <td>{@link #UNICODE_CASE}</td>     <td>enable Unicode case folding</td></tr>
-  <tr><td>`x`</td> <td>{@link #COMMENTS}</td>         <td>allow whitespace and comments</td></tr>
-  </table>
+| Flag  | Meaning |
+| ----- | --------------- |
+| `i`   | Case insensitive matching. |
+| `d`   | Only accept `\n` as a line terminator. |
+| `m`   | Multiline: allow `^` and `$` to match beginning/end of any line. |
+| `s`   | Single line: allow `.` to match `\n`. |
+| `u`   | Unicode case folding. |
+| `x`   | Allow whitespace and comments. |
 
 Either set of flags may be empty. For example, `(?i-m)` would turn on case-insensitivity and turn off multiline mode, `(?i)` would just turn on case-insensitivity, and `(?-m)` would just turn off multiline mode.
